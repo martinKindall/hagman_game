@@ -73,6 +73,34 @@ describe('HangmanGame tests', () => {
     expect(game.hasWon()).toBeTruthy();
   });
 
+  test('Game Over', () => {
+    expect(game.hasWon()).toBeFalsy();
+    expect(game.gameOver()).toBeFalsy();
+    let guessChar = 'z';
+    game.guessNextChar(guessChar);
+    guessChar = 'x';
+    game.guessNextChar(guessChar);
+    guessChar = 'b';
+    game.guessNextChar(guessChar);
+    guessChar = 'c';
+    game.guessNextChar(guessChar);
+    guessChar = 'f';
+    game.guessNextChar(guessChar);
+    guessChar = 'g';
+    game.guessNextChar(guessChar);
+    guessChar = 'h';
+    game.guessNextChar(guessChar);
+    guessChar = 'j';
+    game.guessNextChar(guessChar);
+    guessChar = 'k';
+    game.guessNextChar(guessChar);
+    guessChar = 'm';
+    expect(game.gameOver()).toBeFalsy();
+    game.guessNextChar(guessChar);
+    expect(game.hasWon()).toBeFalsy();
+    expect(game.gameOver()).toBeTruthy();
+  });
+
   function setupGame() {
     game = new HangmanGame(secretWord);
   }

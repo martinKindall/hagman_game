@@ -8,6 +8,7 @@ class HangmanGame {
   private guessedWrongCharacters: Set<string>;
   private guessedCorrectCharacters: Set<string>;
   private winState: boolean = false;
+  private gameOverState: boolean = false;
 
   constructor(secretWord: string) {
     this.secretWord = secretWord;
@@ -19,6 +20,7 @@ class HangmanGame {
   guessNextChar(guessChar: string) {
     if (!wordContainsCharacter(this.secretWord, guessChar)) {
       this.ifCharacterWasNotPreviouslyGuessedWrong(guessChar);
+      this.checkGameOverLogic();
     } else {
       this.ifCharacterWasNotPreviouslyGuessed(guessChar);
       this.checkWinLogic();
@@ -61,6 +63,16 @@ class HangmanGame {
     }
 
     this.winState = true;
+  }
+
+  gameOver(): boolean {
+    return this.gameOverState;
+  }
+
+  private checkGameOverLogic() {
+    if (this.livesRemaining === 0) {
+      this.gameOverState = true;
+    }
   }
 }
 
