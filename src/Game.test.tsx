@@ -39,6 +39,28 @@ describe('HangmanGame tests', () => {
   test('Guessed character in word', () => {
     const guessChar = 'p';
     game.guessNextChar(guessChar);
+    checkGuessedCharacterLogic(guessChar);
+  });
+
+  test('Guessed repeated character in word has no effect', () => {
+    const guessChar = 'p';
+    game.guessNextChar(guessChar);
+    game.guessNextChar(guessChar);
+    checkGuessedCharacterLogic(guessChar);
+  });
+
+  function setupGame() {
+    game = new HangmanGame(secretWord);
+  }
+
+  function wordStateIsUndefined() {
+    let idx;
+    for (idx = 0; idx < secretWord.length; idx++) {
+      expect(game.currentWordState[idx]).toBeUndefined();
+    }
+  }
+
+  function checkGuessedCharacterLogic(guessChar: string) {
     expect(game.livesRemaining).toBe(HangmanRules.maxLives);
     const currentWord = game.currentWordState;
     const charPInWordIndex = [0, 8, 10];
@@ -50,17 +72,6 @@ describe('HangmanGame tests', () => {
       } else {
         expect(currentWord[idx]).toBe(guessChar);
       }
-    }
-  });
-
-  function setupGame() {
-    game = new HangmanGame(secretWord);
-  }
-
-  function wordStateIsUndefined() {
-    let idx;
-    for (idx = 0; idx < secretWord.length; idx++) {
-      expect(game.currentWordState[idx]).toBeUndefined();
     }
   }
 });
