@@ -71,6 +71,7 @@ describe('HangmanGame tests', () => {
 
     expect(game.currentWordState.join('')).toBe(secretWord);
     expect(game.hasWon()).toBeTruthy();
+    expect(game.gameOver()).toBeFalsy();
   });
 
   test('Game Over', () => {
