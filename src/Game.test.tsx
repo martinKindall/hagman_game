@@ -1,5 +1,5 @@
-import HangmanRules from "./HangmanRules";
-import HangmanGame from "./HangmanGame";
+import HangmanRules from "./gameController/HangmanRules";
+import HangmanGame from "./gameController/HangmanGame";
 
 describe('HangmanGame tests', () => {
   let game: HangmanGame;
