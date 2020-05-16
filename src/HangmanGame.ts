@@ -2,11 +2,12 @@ import HangmanRules from "./HangmanRules";
 
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
-  public currentWordState: string[] | undefined[];
+  public currentWordState: string[];
 
   private readonly secretWord: string;
   private guessedWrongCharacters: Set<string>;
   private guessedCorrectCharacters: Set<string>;
+  private winState: boolean = false;
 
   constructor(secretWord: string) {
     this.secretWord = secretWord;
@@ -20,6 +21,7 @@ class HangmanGame {
       this.ifCharacterWasNotPreviouslyGuessedWrong(guessChar);
     } else {
       this.ifCharacterWasNotPreviouslyGuessed(guessChar);
+      this.checkWinLogic();
     }
   }
 
@@ -44,6 +46,21 @@ class HangmanGame {
       this.livesRemaining -= 1;
       this.guessedWrongCharacters.add(guessChar);
     }
+  }
+
+  hasWon(): boolean {
+    return this.winState;
+  }
+
+  private checkWinLogic() {
+    let idx;
+    for (idx = 0; idx < this.secretWord.length; idx++) {
+      if (this.currentWordState[idx] === undefined) {
+        return;
+      }
+    }
+
+    this.winState = true;
   }
 }
 

@@ -49,6 +49,30 @@ describe('HangmanGame tests', () => {
     checkGuessedCharacterLogic(guessChar);
   });
 
+  test('Win', () => {
+    expect(game.hasWon()).toBeFalsy();
+    let guessChar = 'p';
+    game.guessNextChar(guessChar);
+    guessChar = 'a';
+    game.guessNextChar(guessChar);
+    guessChar = 'r';
+    game.guessNextChar(guessChar);
+    guessChar = 'l';
+    game.guessNextChar(guessChar);
+    guessChar = 'e';
+    game.guessNextChar(guessChar);
+    guessChar = 'i';
+    game.guessNextChar(guessChar);
+    guessChar = 'd';
+    game.guessNextChar(guessChar);
+    guessChar = 'o';
+    expect(game.hasWon()).toBeFalsy();
+    game.guessNextChar(guessChar);
+
+    expect(game.currentWordState.join('')).toBe(secretWord);
+    expect(game.hasWon()).toBeTruthy();
+  });
+
   function setupGame() {
     game = new HangmanGame(secretWord);
   }
