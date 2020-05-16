@@ -36,6 +36,23 @@ describe('HangmanGame tests', () => {
     wordStateIsUndefined();
   });
 
+  test('Guessed character in word', () => {
+    const guessChar = 'p';
+    game.guessNextChar(guessChar);
+    expect(game.livesRemaining).toBe(HangmanRules.maxLives);
+    const currentWord = game.currentWordState;
+    const charPInWordIndex = [0, 8, 10];
+
+    let idx;
+    for (idx = 0; idx < secretWord.length; idx++) {
+      if (charPInWordIndex.indexOf(idx) < 0) {
+        expect(currentWord[idx]).toBeUndefined();
+      } else {
+        expect(currentWord[idx]).toBe(guessChar);
+      }
+    }
+  });
+
   function setupGame() {
     game = new HangmanGame(secretWord);
   }
