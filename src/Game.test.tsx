@@ -28,6 +28,14 @@ describe('HangmanGame tests', () => {
     wordStateIsUndefined();
   });
 
+  test('Repeated character has no effect', () => {
+    const guessChar = 'z';
+    game.guessNextChar(guessChar);
+    game.guessNextChar(guessChar);
+    expect(game.livesRemaining).toBe(HangmanRules.maxLives - 1);
+    wordStateIsUndefined();
+  });
+
   function setupGame() {
     game = new HangmanGame(secretWord);
   }
