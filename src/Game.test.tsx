@@ -1,13 +1,15 @@
+import HangmanRules from "./HangmanRules";
+import HangmanGame from "./HangmanGame";
 
 test('Game initialization rules', () => {
   const secretWord = "paralelepipedo";
   const game = new HangmanGame(secretWord);
 
   expect(game.livesRemaining).toBe(HangmanRules.maxLives);
+  expect(game.currentWordState.length).toBe(secretWord.length);
 
-  const emptyArray = Array(secretWord.length);
-  expect(game.currentWordState.length).toBe(emptyArray.length);
-  game.currentWordState.forEach((character: undefined) => {
-    expect(character).toBeUndefined();
-  });
+  let idx;
+  for (idx = 0; idx < secretWord.length; idx++) {
+    expect(game.currentWordState[idx]).toBeUndefined();
+  }
 });
