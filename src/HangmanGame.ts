@@ -10,6 +10,12 @@ class HangmanGame {
     this.secretWord = secretWord;
     this.currentWordState = Array(secretWord.length);
   }
+
+  guessNextChar(guessChar: string) {
+    if (this.secretWord.indexOf(guessChar) < 0) {
+      this.livesRemaining -= 1;
+    }
+  }
 }
 
 export default HangmanGame;
