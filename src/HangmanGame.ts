@@ -4,7 +4,7 @@ class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
   public currentWordState: string[] | undefined[];
 
-  private secretWord: string;
+  private readonly secretWord: string;
   private guessedWrongCharacters: Set<string>;
   private guessedCorrectCharacters: Set<string>;
 
@@ -16,21 +16,39 @@ class HangmanGame {
   }
 
   guessNextChar(guessChar: string) {
-    if (this.secretWord.indexOf(guessChar) < 0) {
-      if (!this.guessedWrongCharacters.has(guessChar)) {
-        this.livesRemaining -= 1;
-        this.guessedWrongCharacters.add(guessChar);
-      }
-    } else if (!this.guessedCorrectCharacters.has(guessChar)){
+    if (!wordContainsCharacter(this.secretWord, guessChar)) {
+      this.ifCharacterWasNotPreviouslyGuessedWrong(guessChar);
+    } else {
+      this.ifCharacterWasNotPreviouslyGuessed(guessChar);
+    }
+  }
+
+  ifCharacterWasNotPreviouslyGuessed(guessChar: string) {
+    if (!this.guessedCorrectCharacters.has(guessChar)){
       this.guessedCorrectCharacters.add(guessChar);
-      let idx;
-      for (idx = 0; idx < this.secretWord.length; idx++) {
-        if (this.secretWord.charAt(idx) === guessChar) {
-          this.currentWordState[idx] = guessChar;
-        }
+      this.revealGuessedCharacter(guessChar);
+    }
+  }
+
+  revealGuessedCharacter(guessChar: string) {
+    let idx;
+    for (idx = 0; idx < this.secretWord.length; idx++) {
+      if (this.secretWord.charAt(idx) === guessChar) {
+        this.currentWordState[idx] = guessChar;
       }
     }
   }
+
+  ifCharacterWasNotPreviouslyGuessedWrong(guessChar: string) {
+    if (!this.guessedWrongCharacters.has(guessChar)) {
+      this.livesRemaining -= 1;
+      this.guessedWrongCharacters.add(guessChar);
+    }
+  }
+}
+
+function wordContainsCharacter(word: string, character: string): boolean {
+  return word.indexOf(character) > -1;
 }
 
 export default HangmanGame;
