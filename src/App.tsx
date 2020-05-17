@@ -39,7 +39,6 @@ function App() {
   const handleOnCharInput = (character: string) => {
     game.guessNextChar(character);
     setGameState(game.currentWordState.slice());
-    console.log(gameState);
   };
 
   return (
