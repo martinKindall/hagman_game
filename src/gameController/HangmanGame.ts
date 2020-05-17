@@ -78,10 +78,11 @@ class HangmanGame {
   guessWord(word: string) {
     if (word === this.secretWord) {
       this.winState = true;
-      this.currentWordState = this.secretWord.split("");
     } else {
       this.gameOverState = true;
+      this.livesRemaining = 0;
     }
+    this.currentWordState = this.secretWord.split("");
   }
 }
 

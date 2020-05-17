@@ -105,6 +105,8 @@ describe('HangmanGame tests', () => {
     game.guessWord("no era");
     expect(game.hasWon()).toBeFalsy();
     expect(game.gameOver()).toBeTruthy();
+    expect(game.currentWordState.join("")).toBe(secretWord);
+    expect(game.livesRemaining).toBe(0);
   });
 
   function setupGame() {

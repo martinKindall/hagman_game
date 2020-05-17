@@ -68,14 +68,14 @@ const InputCharacter: React.FC<Props> = ({
       <Grid item xs={6} className={classes.buttonWord}>
         <Button onClick={handleGuessWord} variant="contained"
                 color={"secondary"}
-                disabled={disabled}
+                disabled={disabled || character.length < 2}
         >
           Adivinar palabra
         </Button>
       </Grid>
       <Grid item xs={6} className={classes.buttonChar}>
         <Button onClick={handleGuessCharacter} variant="contained"
-                disabled={disabled || character.length > 1}
+                disabled={disabled || character.length > 1 || character.length === 0}
         >
           Adivinar
         </Button>
@@ -86,6 +86,10 @@ const InputCharacter: React.FC<Props> = ({
 
 export default InputCharacter;
 
-function notValidCharacter(character: string) {
-  return "abcdefghijklmnñopqrstuvwxyz".indexOf(character) < 0;
+function notValidCharacter(word: string): boolean {
+  const fileterdNotValidChars = word.split("").filter((character: string) => {
+    return "abcdefghijklmnñopqrstuvwxyz".indexOf(character) < 0;
+  });
+
+  return fileterdNotValidChars.length > 0;
 }
