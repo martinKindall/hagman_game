@@ -17,12 +17,6 @@ interface Props {
 
 const SecretWord: React.FC<Props> = ({secretWordState}) => {
   const classes = useStyles();
-  let secretWordAsString = " ";
-
-  let idx;
-  for (idx=0; idx < secretWordState.length; idx++) {
-    secretWordAsString += !secretWordState[idx] ? "_ " : (secretWordState[idx] + " ");
-  }
 
   return <>
     <Grid item xs={12}>
@@ -32,10 +26,19 @@ const SecretWord: React.FC<Props> = ({secretWordState}) => {
     </Grid>
     <Grid item xs={12}>
       <Typography variant="h6" className={classes.root}>
-        {secretWordAsString}
+        {convertGameStateToString(secretWordState)}
       </Typography>
     </Grid>
   </>;
 };
 
 export default SecretWord;
+
+function convertGameStateToString(secretWordState: string[]): string {
+  let secretWordAsString = "";
+  let idx;
+  for (idx=0; idx < secretWordState.length; idx++) {
+    secretWordAsString += !secretWordState[idx] ? "_ " : (secretWordState[idx] + " ");
+  }
+  return secretWordAsString;
+}
