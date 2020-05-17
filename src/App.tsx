@@ -19,6 +19,13 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      width: "100%",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      height: "100%",
+      overflow: "scroll",
+      "overflow-x": 'hidden'
     },
     title: {
       flexGrow: 1,

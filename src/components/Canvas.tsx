@@ -23,7 +23,7 @@ const Canvas: React.FC<Props> = ({frame}) => {
 
   useEffect(() => {
     const img = new Image();
-    img.src="https://lh3.googleusercontent.com/proxy/39IOqzbFvatavffNxNsPlfCZh36dyK-s-uMdH59MSM1wUgdIb2mYaqNnXZkLNBVrCeyM-DeCPrlO2n8T2VwD3joXxzp2btbG";
+    img.src="/hangman_sprites.png";
     if (refCanvas != null) {
       const ctx = refCanvas.current.getContext('2d');
       img.onload = () => renderFrame(ctx, img, frame);
