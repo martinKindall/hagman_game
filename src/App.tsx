@@ -10,6 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import InputCharacter from "./components/InputCharacter";
 import SecretWord from "./components/SecretWord";
 import WrongCharacters from "./components/WrongCharacters";
+import GameWinOrLose from "./components/GameWinOrLose";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,8 +51,9 @@ function App() {
                 </Typography>
             </Toolbar>
         </AppBar>
+        <GameWinOrLose winState={game.hasWon()} gameOver={game.gameOver()}/>
         <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
-          <InputCharacter handleOnCharInput={handleOnCharInput}/>
+          <InputCharacter handleOnCharInput={handleOnCharInput} disabled={game.gameOver() || game.hasWon()}/>
           <SecretWord secretWordState={gameState}/>
           <WrongCharacters usedCharacters={game.guessedWrongCharacters}/>
         </Grid>

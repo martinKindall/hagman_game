@@ -19,9 +19,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   handleOnCharInput: (character: string) => void;
+  disabled: boolean;
 }
 
-const InputCharacter: React.FC<Props> = ({handleOnCharInput}) => {
+const InputCharacter: React.FC<Props> = ({handleOnCharInput, disabled}) => {
   const classes = useStyles();
   const [character, setCharacter] = useState<string>("");
 
@@ -47,11 +48,15 @@ const InputCharacter: React.FC<Props> = ({handleOnCharInput}) => {
           <TextField id="outlined-basic" label="Siguiente letra"
                      variant="outlined"
                      value={character}
-                     onChange={handleCharacterInputOnChange}/>
+                     onChange={handleCharacterInputOnChange}
+                     disabled={disabled}
+          />
         </FormControl>
       </Grid>
       <Grid item xs={12} className={classes.buttonChar}>
-        <Button onClick={handleGuess} variant="contained">
+        <Button onClick={handleGuess} variant="contained"
+                disabled={disabled}
+        >
           Adivinar
         </Button>
       </Grid>
