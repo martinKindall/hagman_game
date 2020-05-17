@@ -1,5 +1,5 @@
 
-const maxLives = 10;
+const maxLives = 6;
 
 export default {
   maxLives: maxLives

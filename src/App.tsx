@@ -11,6 +11,8 @@ import InputCharacter from "./components/InputCharacter";
 import SecretWord from "./components/SecretWord";
 import WrongCharacters from "./components/WrongCharacters";
 import GameWinOrLose from "./components/GameWinOrLose";
+import Canvas from "./components/Canvas";
+import HangmanRules from "./gameController/HangmanRules";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -55,6 +57,7 @@ function App() {
         <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
           <InputCharacter handleOnCharInput={handleOnCharInput} disabled={game.gameOver() || game.hasWon()}/>
           <SecretWord secretWordState={gameState}/>
+          <Canvas frame={getCurrentFrame(game)}/>
           <WrongCharacters usedCharacters={game.guessedWrongCharacters}/>
         </Grid>
       </div>
@@ -62,3 +65,7 @@ function App() {
 }
 
 export default App;
+
+function getCurrentFrame(game: HangmanGame): number {
+  return HangmanRules.maxLives - game.livesRemaining;
+}
