@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import InputCharacter from "./components/InputCharacter";
 import SecretWord from "./components/SecretWord";
+import WrongCharacters from "./components/WrongCharacters";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,6 +54,7 @@ function App() {
         <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
           <InputCharacter handleOnCharInput={handleOnCharInput}/>
           <SecretWord secretWordState={gameState}/>
+          <WrongCharacters usedCharacters={game.guessedWrongCharacters}/>
         </Grid>
       </div>
   );

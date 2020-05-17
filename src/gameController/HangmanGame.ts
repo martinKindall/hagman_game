@@ -3,9 +3,9 @@ import HangmanRules from "./HangmanRules";
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
   public currentWordState: string[];
+  public guessedWrongCharacters: Set<string>;
 
   private readonly secretWord: string;
-  private guessedWrongCharacters: Set<string>;
   private guessedCorrectCharacters: Set<string>;
   private winState: boolean = false;
   private gameOverState: boolean = false;
