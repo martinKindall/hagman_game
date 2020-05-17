@@ -20,15 +20,15 @@ interface Props {
 const Canvas: React.FC<Props> = ({frame}) => {
   const classes = useStyles();
   const refCanvas: any = useRef(null);
+  const img = new Image();
+  img.src="/hangman_sprites.png";
 
   useEffect(() => {
-    const img = new Image();
-    img.src="/hangman_sprites.png";
     if (refCanvas != null) {
       const ctx = refCanvas.current.getContext('2d');
       img.onload = () => renderFrame(ctx, img, frame);
     }
-  }, [frame]);
+  }, [img, frame]);
 
   return <Grid item xs={12} className={classes.root}>
     <canvas ref={refCanvas} width={spriteWidth} height={spriteHeight}>
