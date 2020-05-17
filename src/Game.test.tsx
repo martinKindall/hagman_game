@@ -102,6 +102,18 @@ describe('HangmanGame tests', () => {
     expect(game.gameOver()).toBeTruthy();
   });
 
+  test('Win on complete guess', () => {
+    game.guessWord(secretWord);
+    expect(game.hasWon()).toBeTruthy();
+    expect(game.gameOver()).toBeFalsy();
+  });
+
+  test('Lose on complete guess', () => {
+    game.guessWord("no era");
+    expect(game.hasWon()).toBeFalsy();
+    expect(game.gameOver()).toBeTruthy();
+  });
+
   function setupGame() {
     game = new HangmanGame(secretWord);
   }

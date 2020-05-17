@@ -74,6 +74,14 @@ class HangmanGame {
       this.gameOverState = true;
     }
   }
+
+  guessWord(word: string) {
+    if (word === this.secretWord) {
+      this.winState = true;
+    } else {
+      this.gameOverState = true;
+    }
+  }
 }
 
 function wordContainsCharacter(word: string, character: string): boolean {
