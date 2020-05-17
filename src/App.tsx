@@ -8,6 +8,9 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,12 +23,17 @@ const useStyles = makeStyles((theme: Theme) =>
     inputElem: {
       textAlign: "center",
       marginTop: "1rem"
+    },
+    buttonChar: {
+      textAlign: "right",
+      marginTop: "1rem"
     }
   }));
 
+const game = new HangmanGame(Utils.randomElementFromArray(RandomWords.words));
+
 function App() {
   const classes = useStyles();
-  const game = new HangmanGame(Utils.randomElementFromArray(RandomWords.words));
   const [gameState, setGameState] = useState<string[]>(game.currentWordState);
   const [character, setCharacter] = useState<string>("");
 
@@ -38,6 +46,13 @@ function App() {
     }
   };
 
+  const handleGuess = () => {
+    game.guessNextChar(character);
+    setCharacter("");
+    setGameState(game.currentWordState);
+    console.log(gameState);
+  };
+
   return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -47,14 +62,24 @@ function App() {
                 </Typography>
             </Toolbar>
         </AppBar>
-        <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}
-              className={classes.inputElem}>
-          <Grid item xs={12}>
-            <TextField id="outlined-basic" label="Siguiente letra"
-                       variant="outlined"
-                       value={character}
-                       onChange={handleCharacterInput}/>
+        <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
+          <Grid item xs={2}/>
+          <Grid item xs={8}>
+            <Grid item xs={12} className={classes.inputElem}>
+              <FormControl fullWidth>
+                <TextField id="outlined-basic" label="Siguiente letra"
+                           variant="outlined"
+                           value={character}
+                           onChange={handleCharacterInput}/>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} className={classes.buttonChar}>
+              <Button onClick={handleGuess} variant="contained">
+                Adivinar
+              </Button>
+            </Grid>
           </Grid>
+          <Grid item xs={2}/>
         </Grid>
       </div>
   );
