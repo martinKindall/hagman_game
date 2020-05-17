@@ -28,6 +28,9 @@ const InputCharacter: React.FC<Props> = ({handleOnCharInput, disabled}) => {
 
   const handleCharacterInputOnChange = (event: any) => {
     const character = event.target.value;
+    if (notValidCharacter(character)) {
+      return;
+    }
     if (character.length > 1) {
       setCharacter(character[character.length-1]);
     } else {
@@ -65,3 +68,7 @@ const InputCharacter: React.FC<Props> = ({handleOnCharInput, disabled}) => {
 };
 
 export default InputCharacter;
+
+function notValidCharacter(character: string) {
+  return "abcdefghijklmnñopqrstuvwxyz".indexOf(character) < 0;
+}
