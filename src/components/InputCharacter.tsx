@@ -14,15 +14,23 @@ const useStyles = makeStyles((theme: Theme) =>
     buttonChar: {
       textAlign: "right",
       marginTop: "1rem"
+    },
+    buttonWord: {
+      textAlign: "left",
+      marginTop: "1rem"
     }
   }));
 
 interface Props {
   handleOnCharInput: (character: string) => void;
+  handleOnWordInput: (character: string) => void;
   disabled: boolean;
 }
 
-const InputCharacter: React.FC<Props> = ({handleOnCharInput, disabled}) => {
+const InputCharacter: React.FC<Props> = ({
+                                           handleOnCharInput,
+                                           disabled,
+                                           handleOnWordInput}) => {
   const classes = useStyles();
   const [character, setCharacter] = useState<string>("");
 
@@ -31,21 +39,22 @@ const InputCharacter: React.FC<Props> = ({handleOnCharInput, disabled}) => {
     if (notValidCharacter(character)) {
       return;
     }
-    if (character.length > 1) {
-      setCharacter(character[character.length-1]);
-    } else {
-      setCharacter(character);
-    }
+    setCharacter(character);
   };
 
-  const handleGuess = () => {
-    setCharacter("");
+  const handleGuessCharacter = () => {
     handleOnCharInput(character);
+    setCharacter("");
+  };
+  
+  const handleGuessWord = () => {
+    handleOnWordInput(character);
+    setCharacter("");
   };
 
   return <>
     <Grid item xs={2}/>
-    <Grid item xs={8}>
+    <Grid item xs={8} container>
       <Grid item xs={12} className={classes.inputElem}>
         <FormControl fullWidth>
           <TextField id="outlined-basic" label="Siguiente letra"
@@ -56,9 +65,17 @@ const InputCharacter: React.FC<Props> = ({handleOnCharInput, disabled}) => {
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} className={classes.buttonChar}>
-        <Button onClick={handleGuess} variant="contained"
+      <Grid item xs={6} className={classes.buttonWord}>
+        <Button onClick={handleGuessWord} variant="contained"
+                color={"secondary"}
                 disabled={disabled}
+        >
+          Adivinar palabra
+        </Button>
+      </Grid>
+      <Grid item xs={6} className={classes.buttonChar}>
+        <Button onClick={handleGuessCharacter} variant="contained"
+                disabled={disabled || character.length > 1}
         >
           Adivinar
         </Button>

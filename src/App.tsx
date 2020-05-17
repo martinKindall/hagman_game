@@ -51,6 +51,11 @@ function App() {
     setGameState(game.currentWordState.slice());
   };
 
+  const handleOnWordInput = (word: string) => {
+    game.guessWord(word);
+    setGameState(game.currentWordState.slice());
+  };
+
   return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -62,7 +67,10 @@ function App() {
         </AppBar>
         <GameWinOrLose winState={game.hasWon()} gameOver={game.gameOver()}/>
         <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
-          <InputCharacter handleOnCharInput={handleOnCharInput} disabled={game.gameOver() || game.hasWon()}/>
+          <InputCharacter handleOnCharInput={handleOnCharInput}
+                          disabled={game.gameOver() || game.hasWon()}
+                          handleOnWordInput={handleOnWordInput}
+          />
           <SecretWord secretWordState={gameState}/>
           <Canvas frame={getCurrentFrame(game)}/>
           <WrongCharacters usedCharacters={game.guessedWrongCharacters}/>

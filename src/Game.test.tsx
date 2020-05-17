@@ -88,14 +88,6 @@ describe('HangmanGame tests', () => {
     guessChar = 'f';
     game.guessNextChar(guessChar);
     guessChar = 'g';
-    game.guessNextChar(guessChar);
-    guessChar = 'h';
-    game.guessNextChar(guessChar);
-    guessChar = 'j';
-    game.guessNextChar(guessChar);
-    guessChar = 'k';
-    game.guessNextChar(guessChar);
-    guessChar = 'm';
     expect(game.gameOver()).toBeFalsy();
     game.guessNextChar(guessChar);
     expect(game.hasWon()).toBeFalsy();
