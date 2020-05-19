@@ -110,6 +110,14 @@ describe('HangmanGame tests', () => {
     expect(game.livesRemaining).toBe(0);
   });
 
+  test('Lose on complete guess, trigger observable', (done) => {
+    game.winOrLoseObservable.subscribe((result: boolean) => {
+      expect(result).toBeFalsy();
+      done();
+    });
+    game.guessWord("no era");
+  });
+
   function setupGame() {
     game = new HangmanGame(secretWord);
   }

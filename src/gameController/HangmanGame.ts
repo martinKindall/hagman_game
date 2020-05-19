@@ -1,9 +1,11 @@
 import HangmanRules from "./HangmanConfig";
+import {Subject} from "rxjs";
 
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
   public currentWordState: string[];
   public guessedWrongCharacters: Set<string>;
+  public winOrLoseObservable: Subject<boolean>;
 
   private readonly secretWord: string;
   private guessedCorrectCharacters: Set<string>;
@@ -15,6 +17,7 @@ class HangmanGame {
     this.currentWordState = Array(secretWord.length);
     this.guessedWrongCharacters = new Set();
     this.guessedCorrectCharacters = new Set();
+    this.winOrLoseObservable = new Subject();
   }
 
   guessNextChar(guessChar: string) {
@@ -27,31 +30,39 @@ class HangmanGame {
     }
   }
 
-  ifCharacterWasNotPreviouslyGuessed(guessChar: string) {
-    if (!this.guessedCorrectCharacters.has(guessChar)){
-      this.guessedCorrectCharacters.add(guessChar);
-      this.revealGuessedCharacter(guessChar);
-    }
-  }
-
-  revealGuessedCharacter(guessChar: string) {
-    let idx;
-    for (idx = 0; idx < this.secretWord.length; idx++) {
-      if (this.secretWord.charAt(idx) === guessChar) {
-        this.currentWordState[idx] = guessChar;
-      }
-    }
-  }
-
-  ifCharacterWasNotPreviouslyGuessedWrong(guessChar: string) {
-    if (!this.guessedWrongCharacters.has(guessChar)) {
-      this.livesRemaining -= 1;
-      this.guessedWrongCharacters.add(guessChar);
-    }
-  }
-
   hasWon(): boolean {
     return this.winState;
+  }
+
+  gameOver(): boolean {
+    return this.gameOverState;
+  }
+
+  guessWord(word: string) {
+    if (word === this.secretWord) {
+      this.winState = true;
+    } else {
+      this.setGameOver();
+      this.livesRemaining = 0;
+    }
+    this.revealSecretWord();
+  }
+
+  private checkGameOverLogic() {
+    if (this.livesRemaining === 0) {
+      this.setGameOver();
+      this.revealSecretWord();
+    }
+  }
+
+  private setGameOver() {
+    this.gameOverState = true;
+    this.winOrLoseObservable.next(false);
+    this.winOrLoseObservable.complete();
+  }
+
+  private revealSecretWord() {
+    this.currentWordState = this.secretWord.split("");
   }
 
   private checkWinLogic() {
@@ -65,29 +76,27 @@ class HangmanGame {
     this.winState = true;
   }
 
-  gameOver(): boolean {
-    return this.gameOverState;
-  }
-
-  private checkGameOverLogic() {
-    if (this.livesRemaining === 0) {
-      this.gameOverState = true;
-      this.revealSecretWord();
+  private ifCharacterWasNotPreviouslyGuessed(guessChar: string) {
+    if (!this.guessedCorrectCharacters.has(guessChar)){
+      this.guessedCorrectCharacters.add(guessChar);
+      this.revealGuessedCharacter(guessChar);
     }
   }
 
-  guessWord(word: string) {
-    if (word === this.secretWord) {
-      this.winState = true;
-    } else {
-      this.gameOverState = true;
-      this.livesRemaining = 0;
+  private revealGuessedCharacter(guessChar: string) {
+    let idx;
+    for (idx = 0; idx < this.secretWord.length; idx++) {
+      if (this.secretWord.charAt(idx) === guessChar) {
+        this.currentWordState[idx] = guessChar;
+      }
     }
-    this.revealSecretWord();
   }
 
-  revealSecretWord() {
-    this.currentWordState = this.secretWord.split("");
+  private ifCharacterWasNotPreviouslyGuessedWrong(guessChar: string) {
+    if (!this.guessedWrongCharacters.has(guessChar)) {
+      this.livesRemaining -= 1;
+      this.guessedWrongCharacters.add(guessChar);
+    }
   }
 }
 
