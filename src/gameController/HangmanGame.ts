@@ -1,4 +1,4 @@
-import HangmanRules from "./HangmanRules";
+import HangmanRules from "./HangmanConfig";
 
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;

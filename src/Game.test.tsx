@@ -1,4 +1,4 @@
-import HangmanRules from "./gameController/HangmanRules";
+import HangmanRules from "./gameController/HangmanConfig";
 import HangmanGame from "./gameController/HangmanGame";
 
 describe('HangmanGame tests', () => {

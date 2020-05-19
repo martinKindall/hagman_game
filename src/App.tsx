@@ -12,7 +12,7 @@ import SecretWord from "./components/SecretWord";
 import WrongCharacters from "./components/WrongCharacters";
 import GameWinOrLose from "./components/GameWinOrLose";
 import Canvas from "./components/Canvas";
-import HangmanRules from "./gameController/HangmanRules";
+import HangmanRules from "./gameController/HangmanConfig";
 
 
 const useStyles = makeStyles((theme: Theme) =>
