@@ -1,4 +1,5 @@
 import HiddenWord from "../logic/HiddenWord";
+import Event from "../logic/events/Event"
 
 describe('HiddenWord tests', () => {
   const word = "paralelepipedo";
@@ -11,6 +12,15 @@ describe('HiddenWord tests', () => {
   test('Hidden word has same length', () => {
     expect(hiddenWord.state.length).toBe(word.length);
     wordStateIsUndefined();
+  });
+
+  test('Character is not in secret word', (done) => {
+    hiddenWord.guessObservable.subscribe((result: Event) => {
+      wordStateIsUndefined();
+      done();
+    });
+    const guessChar = 'z';
+    hiddenWord.guessNextChar(guessChar);
   });
 
   function wordStateIsUndefined() {
