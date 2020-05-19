@@ -40,7 +40,7 @@ class HangmanGame {
 
   guessWord(word: string) {
     if (word === this.secretWord) {
-      this.winState = true;
+      this.setWin();
     } else {
       this.setGameOver();
       this.livesRemaining = 0;
@@ -61,6 +61,12 @@ class HangmanGame {
     this.winOrLoseObservable.complete();
   }
 
+  private setWin() {
+    this.winState = true;
+    this.winOrLoseObservable.next(true);
+    this.winOrLoseObservable.complete();
+  }
+
   private revealSecretWord() {
     this.currentWordState = this.secretWord.split("");
   }
@@ -73,7 +79,7 @@ class HangmanGame {
       }
     }
 
-    this.winState = true;
+    this.setWin();
   }
 
   private ifCharacterWasNotPreviouslyGuessed(guessChar: string) {
