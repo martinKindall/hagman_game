@@ -72,6 +72,7 @@ class HangmanGame {
   private checkGameOverLogic() {
     if (this.livesRemaining === 0) {
       this.gameOverState = true;
+      this.revealSecretWord();
     }
   }
 
@@ -82,6 +83,10 @@ class HangmanGame {
       this.gameOverState = true;
       this.livesRemaining = 0;
     }
+    this.revealSecretWord();
+  }
+
+  revealSecretWord() {
     this.currentWordState = this.secretWord.split("");
   }
 }

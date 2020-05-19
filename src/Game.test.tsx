@@ -92,6 +92,7 @@ describe('HangmanGame tests', () => {
     game.guessNextChar(guessChar);
     expect(game.hasWon()).toBeFalsy();
     expect(game.gameOver()).toBeTruthy();
+    expect(game.currentWordState.join("")).toBe(secretWord);
   });
 
   test('Win on complete guess', () => {
