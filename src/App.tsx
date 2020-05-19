@@ -67,10 +67,13 @@ function App() {
         </AppBar>
         <GameWinOrLose winState={game.hasWon()} gameOver={game.gameOver()}/>
         <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
-          <InputCharacter handleOnCharInput={handleOnCharInput}
-                          disabled={game.gameOver() || game.hasWon()}
-                          handleOnWordInput={handleOnWordInput}
-          />
+          {
+            !(game.hasWon() || game.gameOver()) &&
+            <InputCharacter handleOnCharInput={handleOnCharInput}
+                            disabled={game.gameOver() || game.hasWon()}
+                            handleOnWordInput={handleOnWordInput}
+            />
+          }
           <SecretWord secretWordState={gameState}/>
           <Canvas frame={getCurrentFrame(game)}/>
           <WrongCharacters usedCharacters={game.guessedWrongCharacters}/>
