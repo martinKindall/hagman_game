@@ -8,20 +8,27 @@ class HiddenWord {
   public guessedWrongCharacters: Set<string>;
 
   private hiddenWord: string;
+  private guessedCorrectCharacters: Set<string>;
 
   constructor(word: string) {
     this.state = Array(word.length);
     this.guessObservable = new Subject();
     this.hiddenWord = word;
     this.guessedWrongCharacters = new Set();
+    this.guessedCorrectCharacters = new Set();
   }
 
   guessNextChar(guessChar: string) {
     if (!wordContainsCharacter(this.hiddenWord, guessChar)) {
-      this.guessedWrongCharacters.add(guessChar);
-      this.guessObservable.next(new ReduceOneLife());
+      if (!this.guessedWrongCharacters.has(guessChar)) {
+        this.guessedWrongCharacters.add(guessChar);
+        this.guessObservable.next(new ReduceOneLife());
+      }
     } else {
-      this.revealGuessedCharacter(guessChar);
+      if (!this.guessedCorrectCharacters.has(guessChar)) {
+        this.guessedCorrectCharacters.add(guessChar);
+        this.revealGuessedCharacter(guessChar);
+      }
     }
   }
 
