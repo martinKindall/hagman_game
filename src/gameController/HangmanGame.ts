@@ -17,7 +17,7 @@ class HangmanGame {
     this.winOrLoseObservable = new Subject();
     this.stateUpdated = new Subject();
 
-    this.currentWordState.hiddenWordObservable.subscribe((event) => this.accept(event));
+    this.currentWordState.hiddenWordObservable.subscribe((event: Event) => this.accept(event));
   }
 
   getCurrentWordState() {
