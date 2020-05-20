@@ -62,7 +62,25 @@ describe('HiddenWord tests', () => {
       expect(hiddenWord.state.join("")).toBe(word);
       done();
     });
+
     hiddenWord.guessWord("hola");
+  });
+
+  test('Guess word char by char', (done) => {
+    hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
+      expect(typeof result).not.toBeUndefined();
+      expect(hiddenWord.state.join("")).toBe(word);
+      done();
+    });
+
+    hiddenWord.guessNextChar("p");
+    hiddenWord.guessNextChar("a");
+    hiddenWord.guessNextChar("r");
+    hiddenWord.guessNextChar("l");
+    hiddenWord.guessNextChar("e");
+    hiddenWord.guessNextChar("i");
+    hiddenWord.guessNextChar("d");
+    hiddenWord.guessNextChar("o");
   });
 
   function wordStateIsUndefined() {

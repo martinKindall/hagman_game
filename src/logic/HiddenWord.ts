@@ -37,10 +37,14 @@ class HiddenWord {
   guessWord(word: string) {
     this.state = this.hiddenWord.split("");
     if (this.hiddenWord === word) {
-      this.hiddenWordObservable.next(new WordIsGuessed());
+      this.onGuessedWord();
     } else {
       this.hiddenWordObservable.next(new WordWrongGuess());
     }
+  }
+
+  private onGuessedWord() {
+    this.hiddenWordObservable.next(new WordIsGuessed());
   }
 
   private revealGuessedCharacter(guessChar: string) {
@@ -50,6 +54,19 @@ class HiddenWord {
         this.state[idx] = guessChar;
       }
     }
+
+    this.checkIfWordWasGuessed();
+  }
+
+  private checkIfWordWasGuessed() {
+    let idx;
+    for (idx = 0; idx < this.hiddenWord.length; idx++) {
+      if (this.state[idx] === undefined) {
+        return;
+      }
+    }
+
+    this.onGuessedWord();
   }
 }
 
