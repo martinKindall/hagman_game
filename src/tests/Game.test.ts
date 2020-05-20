@@ -10,9 +10,7 @@ describe('HangmanGame tests', () => {
   });
 
   test('Game initialization rules', () => {
-    expect(game.livesRemaining).toBe(HangmanRules.maxLives);
     expect(game.currentWordState.length).toBe(secretWord.length);
-
     wordStateIsUndefined();
   });
 

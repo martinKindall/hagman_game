@@ -14,7 +14,7 @@ describe('HiddenWord tests', () => {
     wordStateIsUndefined();
   });
 
-  test('Character is not in secret word', (done) => {
+  test('Character is not in secret word, emits event of reduce life', (done) => {
     hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
       wordStateIsUndefined();
       expect(result).not.toBeUndefined();
@@ -81,6 +81,18 @@ describe('HiddenWord tests', () => {
     hiddenWord.guessNextChar("i");
     hiddenWord.guessNextChar("d");
     hiddenWord.guessNextChar("o");
+  });
+
+  test('Guess word char by char but not ready yet', () => {
+    hiddenWord.guessNextChar("p");
+    hiddenWord.guessNextChar("a");
+    hiddenWord.guessNextChar("r");
+    hiddenWord.guessNextChar("l");
+    hiddenWord.guessNextChar("e");
+    hiddenWord.guessNextChar("i");
+    hiddenWord.guessNextChar("d");
+
+    expect(hiddenWord.state.join("")).not.toBe(word);
   });
 
   function wordStateIsUndefined() {
