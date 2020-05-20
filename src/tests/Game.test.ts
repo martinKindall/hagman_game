@@ -81,11 +81,13 @@ describe('HangmanGame tests', () => {
     game.guessNextChar(guessChar);
   });
 
-  test('Win on complete guess', () => {
+  test('Win on complete guess', (done) => {
+    game.winOrLoseObservable.subscribe((result) => {
+      expect(result).toBeTruthy();
+      expect(game.getCurrentWordState().join('')).toBe(secretWord);
+      done();
+    });
     game.guessWord(secretWord);
-    expect(game.hasWon()).toBeTruthy();
-    expect(game.gameOver()).toBeFalsy();
-    expect(game.currentWordState.join("")).toBe(secretWord);
   });
 
   test('Lose on complete guess', () => {
