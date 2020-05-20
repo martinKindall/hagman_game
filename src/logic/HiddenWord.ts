@@ -5,6 +5,7 @@ import ReduceOneLife from "./events/ReduceOneLife";
 class HiddenWord {
   public state: string[];
   public guessObservable: Subject<Event>;
+  public guessedWrongCharacters: Set<string>;
 
   private hiddenWord: string;
 
@@ -12,10 +13,12 @@ class HiddenWord {
     this.state = Array(word.length);
     this.guessObservable = new Subject();
     this.hiddenWord = word;
+    this.guessedWrongCharacters = new Set();
   }
 
   guessNextChar(guessChar: string) {
     if (!wordContainsCharacter(this.hiddenWord, guessChar)) {
+      this.guessedWrongCharacters.add(guessChar);
       this.guessObservable.next(new ReduceOneLife());
     } else {
       this.revealGuessedCharacter(guessChar);

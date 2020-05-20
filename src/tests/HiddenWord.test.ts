@@ -39,6 +39,14 @@ describe('HiddenWord tests', () => {
     }
   });
 
+  test('Guessed wrong characters are stored', () => {
+    expect(hiddenWord.guessedWrongCharacters.size).toBe(0);
+    const guessChar = 'z';
+    hiddenWord.guessNextChar(guessChar);
+    expect(hiddenWord.guessedWrongCharacters.size).toBe(1);
+    expect(hiddenWord.guessedWrongCharacters.has(guessChar)).toBeTruthy();
+  });
+
   function wordStateIsUndefined() {
     let idx;
     for (idx = 0; idx < word.length; idx++) {
