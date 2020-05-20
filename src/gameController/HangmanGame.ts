@@ -11,7 +11,6 @@ class HangmanGame {
   public stateUpdated: Subject<void>;
 
   private readonly secretWord: string;
-  private guessedCorrectCharacters: Set<string>;
   private winState: boolean = false;
   private gameOverState: boolean = false;
 
@@ -19,7 +18,6 @@ class HangmanGame {
     this.secretWord = secretWord;
     this.currentWordState = new HiddenWord(secretWord);
     this.guessedWrongCharacters = new Set();
-    this.guessedCorrectCharacters = new Set();
     this.winOrLoseObservable = new Subject();
     this.stateUpdated = new Subject();
 
@@ -44,8 +42,9 @@ class HangmanGame {
     this.winOrLoseObservable.complete();
   }
 
-  gameOver(): boolean {
-    return this.gameOverState;
+  gameOver() {
+    this.winOrLoseObservable.next(false);
+    this.winOrLoseObservable.complete();
   }
 
   guessWord(word: string) {
@@ -54,12 +53,6 @@ class HangmanGame {
     } else {
       this.setGameOver();
       this.livesRemaining = 0;
-    }
-  }
-
-  private checkGameOverLogic() {
-    if (this.livesRemaining === 0) {
-      this.setGameOver();
     }
   }
 
@@ -74,32 +67,6 @@ class HangmanGame {
     this.winOrLoseObservable.next(true);
     this.winOrLoseObservable.complete();
   }
-
-  private ifCharacterWasNotPreviouslyGuessed(guessChar: string) {
-    if (!this.guessedCorrectCharacters.has(guessChar)){
-      this.guessedCorrectCharacters.add(guessChar);
-      this.revealGuessedCharacter(guessChar);
-    }
-  }
-
-  private revealGuessedCharacter(guessChar: string) {
-    let idx;
-    for (idx = 0; idx < this.secretWord.length; idx++) {
-      if (this.secretWord.charAt(idx) === guessChar) {
-      }
-    }
-  }
-
-  private ifCharacterWasNotPreviouslyGuessedWrong(guessChar: string) {
-    if (!this.guessedWrongCharacters.has(guessChar)) {
-      this.livesRemaining -= 1;
-      this.guessedWrongCharacters.add(guessChar);
-    }
-  }
-}
-
-function wordContainsCharacter(word: string, character: string): boolean {
-  return word.indexOf(character) > -1;
 }
 
 export default HangmanGame;

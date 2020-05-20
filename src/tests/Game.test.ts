@@ -61,9 +61,12 @@ describe('HangmanGame tests', () => {
     game.guessNextChar(guessChar);
   });
 
-  test('Game Over', () => {
-    expect(game.hasWon()).toBeFalsy();
-    expect(game.gameOver()).toBeFalsy();
+  test('Game Over', (done) => {
+    game.winOrLoseObservable.subscribe((result) => {
+      expect(result).toBeFalsy();
+      expect(game.getCurrentWordState().join('')).toBe(secretWord);
+      done();
+    });
     let guessChar = 'z';
     game.guessNextChar(guessChar);
     guessChar = 'x';
@@ -75,11 +78,7 @@ describe('HangmanGame tests', () => {
     guessChar = 'f';
     game.guessNextChar(guessChar);
     guessChar = 'g';
-    expect(game.gameOver()).toBeFalsy();
     game.guessNextChar(guessChar);
-    expect(game.hasWon()).toBeFalsy();
-    expect(game.gameOver()).toBeTruthy();
-    expect(game.currentWordState.join("")).toBe(secretWord);
   });
 
   test('Win on complete guess', () => {
