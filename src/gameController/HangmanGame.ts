@@ -6,18 +6,14 @@ import Event from "../logic/events/Event";
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
   public currentWordState: HiddenWord;
-  public guessedWrongCharacters: Set<string>;
   public winOrLoseObservable: Subject<boolean>;
   public stateUpdated: Subject<void>;
 
   private readonly secretWord: string;
-  private winState: boolean = false;
-  private gameOverState: boolean = false;
 
   constructor(secretWord: string) {
     this.secretWord = secretWord;
     this.currentWordState = new HiddenWord(secretWord);
-    this.guessedWrongCharacters = new Set();
     this.winOrLoseObservable = new Subject();
     this.stateUpdated = new Subject();
 
@@ -56,6 +52,10 @@ class HangmanGame {
     if (this.livesRemaining === 0) {
       this.triggerGameOver();
     }
+  }
+
+  getGuessedWrongCharacters(): Set<string> {
+    return this.currentWordState.guessedWrongCharacters;
   }
 
   private triggerGameOver() {
