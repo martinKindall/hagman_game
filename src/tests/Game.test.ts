@@ -14,16 +14,14 @@ describe('HangmanGame tests', () => {
     wordStateIsUndefined();
   });
 
-  test('Character is not in secret word', () => {
+  test('Character is not in secret word', (done) => {
+    game.stateUpdated.subscribe(() => {
+      wordStateIsUndefined();
+      expect(game.livesRemaining).toBe(HangmanRules.maxLives - 1);
+      done();
+    });
     const guessChar = 'z';
     game.guessNextChar(guessChar);
-    expect(game.livesRemaining).toBe(HangmanRules.maxLives - 1);
-    wordStateIsUndefined();
-
-    const guessChar2 = 't';
-    game.guessNextChar(guessChar2);
-    expect(game.livesRemaining).toBe(HangmanRules.maxLives - 2);
-    wordStateIsUndefined();
   });
 
   test('Repeated character has no effect', () => {
@@ -131,7 +129,7 @@ describe('HangmanGame tests', () => {
   function wordStateIsUndefined() {
     let idx;
     for (idx = 0; idx < secretWord.length; idx++) {
-      expect(game.currentWordState[idx]).toBeUndefined();
+      expect(game.getCurrentWordState()[idx]).toBeUndefined();
     }
   }
 

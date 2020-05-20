@@ -1,12 +1,14 @@
 import HangmanRules from "./HangmanConfig";
 import {Subject} from "rxjs";
 import HiddenWord from "../logic/HiddenWord";
+import Event from "../logic/events/Event";
 
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
   public currentWordState: HiddenWord;
   public guessedWrongCharacters: Set<string>;
   public winOrLoseObservable: Subject<boolean>;
+  public stateUpdated: Subject<void>;
 
   private readonly secretWord: string;
   private guessedCorrectCharacters: Set<string>;
@@ -19,19 +21,22 @@ class HangmanGame {
     this.guessedWrongCharacters = new Set();
     this.guessedCorrectCharacters = new Set();
     this.winOrLoseObservable = new Subject();
+    this.stateUpdated = new Subject();
+
+    this.currentWordState.hiddenWordObservable.subscribe((event) => this.accept(event));
   }
 
   getCurrentWordState() {
     return this.currentWordState.state;
   }
 
+  accept(event: Event) {
+    event.visitGame(this);
+    this.stateUpdated.next();
+  }
+
   guessNextChar(guessChar: string) {
-    if (!wordContainsCharacter(this.secretWord, guessChar)) {
-      this.ifCharacterWasNotPreviouslyGuessedWrong(guessChar);
-      this.checkGameOverLogic();
-    } else {
-      this.ifCharacterWasNotPreviouslyGuessed(guessChar);
-    }
+    this.currentWordState.guessNextChar(guessChar);
   }
 
   hasWon(): boolean {
