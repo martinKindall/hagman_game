@@ -18,6 +18,16 @@ class HiddenWord {
     if (!wordContainsCharacter(this.hiddenWord, guessChar)) {
       this.guessObservable.next(new ReduceOneLife());
     } else {
+      this.revealGuessedCharacter(guessChar);
+    }
+  }
+
+  private revealGuessedCharacter(guessChar: string) {
+    let idx;
+    for (idx = 0; idx < this.hiddenWord.length; idx++) {
+      if (this.hiddenWord.charAt(idx) === guessChar) {
+        this.state[idx] = guessChar;
+      }
     }
   }
 }

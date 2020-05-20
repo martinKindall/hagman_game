@@ -17,10 +17,26 @@ describe('HiddenWord tests', () => {
   test('Character is not in secret word', (done) => {
     hiddenWord.guessObservable.subscribe((result: Event) => {
       wordStateIsUndefined();
+      expect(result).not.toBeUndefined();
       done();
     });
     const guessChar = 'z';
     hiddenWord.guessNextChar(guessChar);
+  });
+
+  test('Character is correct', () => {
+    const guessChar = 'p';
+    hiddenWord.guessNextChar(guessChar);
+    const pInWord = [0, 8, 10];
+
+    let idx;
+    for (idx = 0; idx < word.length; idx++) {
+      if (pInWord.indexOf(idx) !== -1) {
+        expect(hiddenWord.state[idx]).toBe('p');
+      } else {
+        expect(hiddenWord.state[idx]).toBeUndefined();
+      }
+    }
   });
 
   function wordStateIsUndefined() {
