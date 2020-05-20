@@ -3,7 +3,7 @@ import HangmanGame from "../../gameController/HangmanGame";
 
 class ReduceOneLife implements Event {
   visitGame(game: HangmanGame): void {
-    game.livesRemaining -= 1;
+    game.reduceLife();
   }
 }
 

@@ -67,6 +67,17 @@ class HangmanGame {
     this.winOrLoseObservable.next(true);
     this.winOrLoseObservable.complete();
   }
+
+  reduceLife() {
+    this.livesRemaining -= 1;
+    if (this.livesRemaining === 0) {
+      this.triggerGameOver();
+    }
+  }
+
+  private triggerGameOver() {
+    this.currentWordState.guessWord("");
+  }
 }
 
 export default HangmanGame;
