@@ -39,8 +39,9 @@ class HangmanGame {
     this.currentWordState.guessNextChar(guessChar);
   }
 
-  hasWon(): boolean {
-    return this.winState;
+  hasWon() {
+    this.winOrLoseObservable.next(true);
+    this.winOrLoseObservable.complete();
   }
 
   gameOver(): boolean {

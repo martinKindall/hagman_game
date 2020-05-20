@@ -24,14 +24,6 @@ describe('HangmanGame tests', () => {
     game.guessNextChar(guessChar);
   });
 
-  test('Repeated character has no effect', () => {
-    const guessChar = 'z';
-    game.guessNextChar(guessChar);
-    game.guessNextChar(guessChar);
-    expect(game.livesRemaining).toBe(HangmanRules.maxLives - 1);
-    wordStateIsUndefined();
-  });
-
   test('Guessed character in word', () => {
     const guessChar = 'p';
     game.guessNextChar(guessChar);
@@ -45,8 +37,12 @@ describe('HangmanGame tests', () => {
     checkGuessedCharacterLogic(guessChar);
   });
 
-  test('Win', () => {
-    expect(game.hasWon()).toBeFalsy();
+  test('Win', (done) => {
+    game.winOrLoseObservable.subscribe((result) => {
+      expect(result).toBeTruthy();
+      expect(game.getCurrentWordState().join('')).toBe(secretWord);
+      done();
+    });
     let guessChar = 'p';
     game.guessNextChar(guessChar);
     guessChar = 'a';
@@ -62,12 +58,7 @@ describe('HangmanGame tests', () => {
     guessChar = 'd';
     game.guessNextChar(guessChar);
     guessChar = 'o';
-    expect(game.hasWon()).toBeFalsy();
     game.guessNextChar(guessChar);
-
-    expect(game.currentWordState.join('')).toBe(secretWord);
-    expect(game.hasWon()).toBeTruthy();
-    expect(game.gameOver()).toBeFalsy();
   });
 
   test('Game Over', () => {
@@ -135,7 +126,7 @@ describe('HangmanGame tests', () => {
 
   function checkGuessedCharacterLogic(guessChar: string) {
     expect(game.livesRemaining).toBe(HangmanRules.maxLives);
-    const currentWord = game.currentWordState;
+    const currentWord = game.getCurrentWordState();
     const charPInWordIndex = [0, 8, 10];
 
     let idx;
