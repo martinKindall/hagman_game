@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import HangmanGame from "./gameController/HangmanGame";
-import Utils from "./Utils";
-import RandomWords from "./RandomWords";
+import HangmanGame from "../gameController/HangmanGame";
+import Utils from "../Utils";
+import RandomWords from "../RandomWords";
 import {createStyles, Grid, Theme} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
-import InputCharacter from "./components/InputCharacter";
-import SecretWord from "./components/SecretWord";
-import WrongCharacters from "./components/WrongCharacters";
-import GameWinOrLose from "./components/GameWinOrLose";
-import Canvas from "./components/Canvas";
-import HangmanRules from "./gameController/HangmanConfig";
+import InputCharacter from "./InputCharacter";
+import SecretWord from "./SecretWord";
+import WrongCharacters from "./WrongCharacters";
+import GameWinOrLose from "./GameWinOrLose";
+import Canvas from "./Canvas";
+import HangmanRules from "../gameController/HangmanConfig";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,7 +68,7 @@ function App() {
     const updateDisposable = game.stateUpdated.subscribe(() => {
       setGameState(game.getCurrentWordState().slice())
     });
-    
+
     return () => {
       winLoseDisposable.unsubscribe();
       updateDisposable.unsubscribe();
