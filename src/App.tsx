@@ -57,7 +57,7 @@ function App() {
   };
 
   useEffect(() => {
-    game.winOrLoseObservable.subscribe((result) => {
+    const winLoseDisposable = game.winOrLoseObservable.subscribe((result) => {
       if (result ) {
         setHasWon(true);
       } else {
@@ -65,9 +65,14 @@ function App() {
       }
     });
 
-    game.stateUpdated.subscribe(() => {
+    const updateDisposable = game.stateUpdated.subscribe(() => {
       setGameState(game.getCurrentWordState().slice())
     });
+    
+    return () => {
+      winLoseDisposable.unsubscribe();
+      updateDisposable.unsubscribe();
+    };
   }, []);
 
   return (
