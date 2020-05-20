@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HangmanGame from "./gameController/HangmanGame";
 import Utils from "./Utils";
 import RandomWords from "./RandomWords";
@@ -44,17 +44,31 @@ const game = new HangmanGame(Utils.randomElementFromArray(RandomWords.words));
 
 function App() {
   const classes = useStyles();
-  const [gameState, setGameState] = useState<string[]>(game.currentWordState);
+  const [gameState, setGameState] = useState<string[]>(game.getCurrentWordState());
+  const [hasWon, setHasWon] = useState<boolean>(false);
+  const [gameOver, setGameOver] = useState<boolean>(false);
 
   const handleOnCharInput = (character: string) => {
     game.guessNextChar(character);
-    setGameState(game.currentWordState.slice());
   };
 
   const handleOnWordInput = (word: string) => {
     game.guessWord(word);
-    setGameState(game.currentWordState.slice());
   };
+
+  useEffect(() => {
+    game.winOrLoseObservable.subscribe((result) => {
+      if (result ) {
+        setHasWon(true);
+      } else {
+        setGameOver(true);
+      }
+    });
+
+    game.stateUpdated.subscribe(() => {
+      setGameState(game.getCurrentWordState().slice())
+    });
+  }, []);
 
   return (
       <div className={classes.root}>
@@ -65,18 +79,18 @@ function App() {
                 </Typography>
             </Toolbar>
         </AppBar>
-        <GameWinOrLose winState={game.hasWon()} gameOver={game.gameOver()}/>
+        <GameWinOrLose winState={hasWon} gameOver={gameOver}/>
         <Grid container alignContent={"center"} alignItems={"center"} item spacing={1}>
           {
-            !(game.hasWon() || game.gameOver()) &&
+            !(hasWon || gameOver) &&
             <InputCharacter handleOnCharInput={handleOnCharInput}
-                            disabled={game.gameOver() || game.hasWon()}
+                            disabled={gameOver || hasWon}
                             handleOnWordInput={handleOnWordInput}
             />
           }
           <SecretWord secretWordState={gameState}/>
           <Canvas frame={getCurrentFrame(game)}/>
-          <WrongCharacters usedCharacters={game.guessedWrongCharacters}/>
+          <WrongCharacters usedCharacters={game.getGuessedWrongCharacters()}/>
         </Grid>
       </div>
   );
