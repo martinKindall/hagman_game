@@ -35,8 +35,8 @@ class HiddenWord {
   }
 
   guessWord(word: string) {
+    this.state = this.hiddenWord.split("");
     if (this.hiddenWord === word) {
-      this.state = word.split("");
       this.hiddenWordObservable.next(new WordIsGuessed());
     } else {
       this.hiddenWordObservable.next(new WordWrongGuess());

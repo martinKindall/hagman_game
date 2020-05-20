@@ -47,14 +47,19 @@ describe('HiddenWord tests', () => {
     expect(hiddenWord.guessedWrongCharacters.has(guessChar)).toBeTruthy();
   });
 
-  test('Guess word', () => {
+  test('Guess word', (done) => {
+    hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
+      expect(typeof result).not.toBeUndefined();
+      expect(hiddenWord.state.join("")).toBe(word);
+      done();
+    });
     hiddenWord.guessWord(word);
-    expect(hiddenWord.state.join("")).toBe(word);
   });
 
   test('Guess word goes wrong', (done) => {
     hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
-      expect(result).not.toBeUndefined();
+      expect(typeof result).not.toBeUndefined();
+      expect(hiddenWord.state.join("")).toBe(word);
       done();
     });
     hiddenWord.guessWord("hola");
