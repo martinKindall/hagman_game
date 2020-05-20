@@ -1,9 +1,10 @@
 import HangmanRules from "./HangmanConfig";
 import {Subject} from "rxjs";
+import HiddenWord from "../logic/HiddenWord";
 
 class HangmanGame {
   public livesRemaining: number = HangmanRules.maxLives;
-  public currentWordState: string[];
+  public currentWordState: HiddenWord;
   public guessedWrongCharacters: Set<string>;
   public winOrLoseObservable: Subject<boolean>;
 
@@ -14,10 +15,14 @@ class HangmanGame {
 
   constructor(secretWord: string) {
     this.secretWord = secretWord;
-    this.currentWordState = Array(secretWord.length);
+    this.currentWordState = new HiddenWord(secretWord);
     this.guessedWrongCharacters = new Set();
     this.guessedCorrectCharacters = new Set();
     this.winOrLoseObservable = new Subject();
+  }
+
+  getCurrentWordState() {
+    return this.currentWordState.state;
   }
 
   guessNextChar(guessChar: string) {
@@ -26,7 +31,6 @@ class HangmanGame {
       this.checkGameOverLogic();
     } else {
       this.ifCharacterWasNotPreviouslyGuessed(guessChar);
-      this.checkWinLogic();
     }
   }
 
@@ -45,13 +49,11 @@ class HangmanGame {
       this.setGameOver();
       this.livesRemaining = 0;
     }
-    this.revealSecretWord();
   }
 
   private checkGameOverLogic() {
     if (this.livesRemaining === 0) {
       this.setGameOver();
-      this.revealSecretWord();
     }
   }
 
@@ -67,21 +69,6 @@ class HangmanGame {
     this.winOrLoseObservable.complete();
   }
 
-  private revealSecretWord() {
-    this.currentWordState = this.secretWord.split("");
-  }
-
-  private checkWinLogic() {
-    let idx;
-    for (idx = 0; idx < this.secretWord.length; idx++) {
-      if (this.currentWordState[idx] === undefined) {
-        return;
-      }
-    }
-
-    this.setWin();
-  }
-
   private ifCharacterWasNotPreviouslyGuessed(guessChar: string) {
     if (!this.guessedCorrectCharacters.has(guessChar)){
       this.guessedCorrectCharacters.add(guessChar);
@@ -93,7 +80,6 @@ class HangmanGame {
     let idx;
     for (idx = 0; idx < this.secretWord.length; idx++) {
       if (this.secretWord.charAt(idx) === guessChar) {
-        this.currentWordState[idx] = guessChar;
       }
     }
   }
