@@ -32,6 +32,12 @@ class HiddenWord {
     }
   }
 
+  guessWord(word: string) {
+    if (this.hiddenWord === word) {
+      this.state = word.split("");
+    }
+  }
+
   private revealGuessedCharacter(guessChar: string) {
     let idx;
     for (idx = 0; idx < this.hiddenWord.length; idx++) {

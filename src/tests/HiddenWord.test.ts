@@ -47,6 +47,11 @@ describe('HiddenWord tests', () => {
     expect(hiddenWord.guessedWrongCharacters.has(guessChar)).toBeTruthy();
   });
 
+  test('Guess word', () => {
+    hiddenWord.guessWord(word);
+    expect(hiddenWord.state.join("")).toBe(word);
+  });
+
   function wordStateIsUndefined() {
     let idx;
     for (idx = 0; idx < word.length; idx++) {
