@@ -15,7 +15,7 @@ describe('HiddenWord tests', () => {
   });
 
   test('Character is not in secret word', (done) => {
-    hiddenWord.guessObservable.subscribe((result: Event) => {
+    hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
       wordStateIsUndefined();
       expect(result).not.toBeUndefined();
       done();
@@ -50,6 +50,14 @@ describe('HiddenWord tests', () => {
   test('Guess word', () => {
     hiddenWord.guessWord(word);
     expect(hiddenWord.state.join("")).toBe(word);
+  });
+
+  test('Guess word goes wrong', (done) => {
+    hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
+      expect(result).not.toBeUndefined();
+      done();
+    });
+    hiddenWord.guessWord("hola");
   });
 
   function wordStateIsUndefined() {
