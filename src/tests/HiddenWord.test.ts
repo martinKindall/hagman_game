@@ -67,12 +67,6 @@ describe('HiddenWord tests', () => {
   });
 
   test('Guess word char by char', (done) => {
-    hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
-      expect(typeof result).not.toBeUndefined();
-      expect(hiddenWord.state.join("")).toBe(word);
-      done();
-    });
-
     hiddenWord.guessNextChar("p");
     hiddenWord.guessNextChar("a");
     hiddenWord.guessNextChar("r");
@@ -80,6 +74,12 @@ describe('HiddenWord tests', () => {
     hiddenWord.guessNextChar("e");
     hiddenWord.guessNextChar("i");
     hiddenWord.guessNextChar("d");
+
+    hiddenWord.hiddenWordObservable.subscribe((result: Event) => {
+      expect(typeof result).not.toBeUndefined();
+      expect(hiddenWord.state.join("")).toBe(word);
+      done();
+    });
     hiddenWord.guessNextChar("o");
   });
 

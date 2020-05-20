@@ -26,6 +26,10 @@ class HangmanGame {
 
   accept(event: Event) {
     event.visitGame(this);
+    this.update();
+  }
+
+  update() {
     this.stateUpdated.next();
   }
 
