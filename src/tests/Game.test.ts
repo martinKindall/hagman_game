@@ -90,28 +90,13 @@ describe('HangmanGame tests', () => {
     game.guessWord(secretWord);
   });
 
-  test('Lose on complete guess', () => {
-    game.guessWord("no era");
-    expect(game.hasWon()).toBeFalsy();
-    expect(game.gameOver()).toBeTruthy();
-    expect(game.currentWordState.join("")).toBe(secretWord);
-    expect(game.livesRemaining).toBe(0);
-  });
-
-  test('Lose on complete guess, trigger observable', (done) => {
-    game.winOrLoseObservable.subscribe((result: boolean) => {
+  test('Lose on complete guess', (done) => {
+    game.winOrLoseObservable.subscribe((result) => {
       expect(result).toBeFalsy();
+      expect(game.getCurrentWordState().join('')).toBe(secretWord);
       done();
     });
     game.guessWord("no era");
-  });
-
-  test('Win on complete guess, trigger observable', (done) => {
-    game.winOrLoseObservable.subscribe((result: boolean) => {
-      expect(result).toBeTruthy();
-      done();
-    });
-    game.guessWord(secretWord);
   });
 
   function setupGame() {
